@@ -1,100 +1,106 @@
-# AWS DevOps Infrastructure Setup
+# AWS DevOps Infrastructure Portfolio
 
-Production-grade AWS infrastructure setup using Terraform, featuring ECS, CI/CD pipelines, and monitoring.
+Production-grade AWS infrastructure featuring ECS, CI/CD pipelines, monitoring, and security best practices.
 
-## Architecture Overview
+## Architecture Components
 
 - VPC with public/private subnets
-- ECS cluster with auto-scaling
+- ECS Fargate cluster with auto-scaling
 - Application Load Balancer (ALB)
-- CI/CD pipeline using AWS CodePipeline
-- S3 storage with encryption
+- CI/CD pipeline with AWS CodePipeline
+- Encrypted S3 storage
 - CloudWatch monitoring
 - OpenTelemetry integration
+- Security scanning with Trivy
 
 ## Prerequisites
 
 - AWS CLI configured
-- Terraform installed (v1.0+)
-- Docker installed
-- Valid AWS credentials
+- Terraform >= 1.0.0
+- Docker
+- AWS Account with appropriate permissions
+
+## Repository Structure
+
+```
+aws-devops-portfolio/
+├── terraform/
+│   ├── main.tf             # Core infrastructure
+│   ├── variables.tf        # Variable definitions
+│   ├── providers.tf        # AWS provider config
+│   └── parameters.tf       # Parameter store setup
+├── cicd/
+│   ├── buildspec.yml       # Build configuration
+│   ├── taskdef.json       # ECS task definition
+│   └── appspec.yaml       # CodeDeploy config
+└── monitoring/
+    └── otel-config.yaml   # OpenTelemetry config
+```
 
 ## Quick Start
 
-1. Clone repository:
+1. Clone and configure:
 ```bash
 git clone https://github.com/yourusername/aws-devops-portfolio
 cd aws-devops-portfolio
+
+# Update AWS region and bucket in providers.tf
+# Update environment name in variables.tf
 ```
 
-2. Initialize Terraform:
+2. Initialize and deploy:
 ```bash
 cd terraform
 terraform init
-```
-
-3. Deploy infrastructure:
-```bash
 terraform plan
 terraform apply
 ```
 
-4. Configure CI/CD:
-- Update ECR repository in buildspec.yml
-- Configure CodePipeline source repository
-- Push code to trigger pipeline
-
-## Infrastructure Components
-
-### Networking
-- VPC (10.0.0.0/16)
-- Public/Private subnets
-- Internet Gateway
-- NAT Gateway
-
-### Compute
-- ECS Cluster
-- Auto-scaling (1-4 instances)
-- CPU-based scaling policy
-
-### Security
-- Encrypted S3 storage
-- Security groups
-- IAM roles
-- HTTPS endpoints
-
-### Monitoring
-- CloudWatch logs
-- Container insights
-- OpenTelemetry tracing
-- Custom metrics
-
-## Maintenance
-
-### Updating Infrastructure
+3. Push code to trigger pipeline:
 ```bash
-terraform plan -out=tfplan
-terraform apply tfplan
+git add .
+git commit -m "Initial deployment"
+git push
 ```
 
-### Cleanup
+## Security Features
+
+- S3 encryption
+- Secrets in AWS Secrets Manager
+- Container security scanning
+- Private subnets for containers
+- ALB with HTTPS
+- Parameter Store for configuration
+
+## Monitoring
+
+Access metrics and logs:
+1. CloudWatch Dashboard: AWS Console > CloudWatch
+2. Container Insights: ECS Cluster > Insights
+3. Trace Analysis: X-Ray Console
+
+## Environment Variables
+
+Required AWS environment variables:
+```bash
+export AWS_ACCESS_KEY_ID="your_access_key"
+export AWS_SECRET_ACCESS_KEY="your_secret_key"
+export AWS_DEFAULT_REGION="us-west-2"
+```
+
+## Cleanup
+
+Remove all resources:
 ```bash
 terraform destroy
 ```
 
-## Security Notes
+## License
 
-- S3 buckets use AES-256 encryption
-- ALB restricted to HTTPS
-- Private subnets for containers
-- Least privilege IAM policies
+MIT
 
 ## Contributing
 
 1. Fork repository
 2. Create feature branch
 3. Submit pull request
-
-## License
-
-MIT
